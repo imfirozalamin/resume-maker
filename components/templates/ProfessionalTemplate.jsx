@@ -4,7 +4,7 @@ import { FiMail, FiPhone, FiMapPin } from 'react-icons/fi';
 
 export default function ProfessionalTemplate({ formData }) {
   return (
-    <div className="bg-white text-gray-900 max-w-[850px] mx-auto flex">
+    <div className="bg-white text-gray-900 w-full flex min-h-[297mm]">
       {/* Left Sidebar */}
       <div className="w-1/3 bg-gray-800 text-white p-6">
         {formData.imageUrl && (

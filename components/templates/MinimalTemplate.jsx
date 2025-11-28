@@ -4,7 +4,7 @@ import { FiMail, FiPhone, FiMapPin } from 'react-icons/fi';
 
 export default function MinimalTemplate({ formData }) {
   return (
-    <div className="bg-white text-gray-900 max-w-[850px] mx-auto p-8">
+    <div className="bg-white text-gray-900 w-full p-8 min-h-[297mm]">
       {/* Minimal Header */}
       <div className="mb-8 pb-6 border-b border-gray-300">
         <h1 className="text-4xl font-light text-gray-900 mb-2 tracking-tight">

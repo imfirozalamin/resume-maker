@@ -4,11 +4,11 @@ import { FiMail, FiPhone, FiMapPin } from 'react-icons/fi';
 
 export default function CreativeTemplate({ formData }) {
   return (
-    <div className="bg-gradient-to-br from-blue-50 to-purple-50 text-gray-900 max-w-[850px] mx-auto p-12 min-h-[1100px]">
+    <div className="bg-gradient-to-br from-blue-50 to-purple-50 text-gray-900 w-full p-8 min-h-[297mm]">
       {/* Creative Header */}
-      <div className="relative mb-8">
+      <div className="relative mb-6">
         <div className="absolute -left-6 -top-6 w-32 h-32 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full opacity-20"></div>
-        <div className="relative bg-white rounded-3xl p-8 shadow-xl">
+        <div className="relative bg-white rounded-3xl p-6 shadow-xl">
           <div className="flex gap-6 items-center">
             {formData.imageUrl && (
               <img
@@ -18,7 +18,7 @@ export default function CreativeTemplate({ formData }) {
               />
             )}
             <div className="flex-1">
-              <h1 className="text-4xl font-extrabold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
+              <h1 className="text-3xl font-extrabold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
                 {formData.fullName || 'Your Name'}
               </h1>
               <h2 className="text-xl font-bold text-gray-700 mb-3">
@@ -51,10 +51,10 @@ export default function CreativeTemplate({ formData }) {
 
       {/* Summary */}
       {formData.summary && (
-        <div className="mb-8 bg-white rounded-2xl p-6 shadow-lg">
+        <div className="mb-6 bg-white rounded-2xl p-4 shadow-lg">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-2 h-8 bg-gradient-to-b from-blue-500 to-purple-500 rounded-full"></div>
-            <h3 className="text-2xl font-bold text-gray-900">About Me</h3>
+            <h3 className="text-xl font-bold text-gray-900">About Me</h3>
           </div>
           <p className="text-gray-700 leading-relaxed pl-5">{formData.summary}</p>
         </div>
@@ -62,14 +62,14 @@ export default function CreativeTemplate({ formData }) {
 
       {/* Experience */}
       {formData.experience?.length > 0 && formData.experience[0].company && (
-        <div className="mb-8">
+        <div className="mb-6">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-2 h-8 bg-gradient-to-b from-blue-500 to-purple-500 rounded-full"></div>
-            <h3 className="text-2xl font-bold text-gray-900">Experience</h3>
+            <h3 className="text-xl font-bold text-gray-900">Experience</h3>
           </div>
           <div className="space-y-4">
             {formData.experience.map((exp, index) => (
-              <div key={index} className="bg-white rounded-2xl p-6 shadow-lg">
+              <div key={index} className="bg-white rounded-2xl p-4 shadow-lg">
                 <div className="flex justify-between items-start mb-2">
                   <div>
                     <h4 className="text-lg font-bold text-gray-900">{exp.position}</h4>
@@ -92,14 +92,14 @@ export default function CreativeTemplate({ formData }) {
 
       {/* Education */}
       {formData.education?.length > 0 && formData.education[0].school && (
-        <div className="mb-8">
+        <div className="mb-6">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-2 h-8 bg-gradient-to-b from-blue-500 to-purple-500 rounded-full"></div>
-            <h3 className="text-2xl font-bold text-gray-900">Education</h3>
+            <h3 className="text-xl font-bold text-gray-900">Education</h3>
           </div>
           <div className="space-y-4">
             {formData.education.map((edu, index) => (
-              <div key={index} className="bg-white rounded-2xl p-6 shadow-lg">
+              <div key={index} className="bg-white rounded-2xl p-4 shadow-lg">
                 <div className="flex justify-between items-start mb-2">
                   <div>
                     <h4 className="text-lg font-bold text-gray-900">{edu.degree}</h4>
@@ -122,10 +122,10 @@ export default function CreativeTemplate({ formData }) {
 
       {/* Skills */}
       {formData.skills && (
-        <div className="mb-8">
+        <div className="mb-6">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-2 h-8 bg-gradient-to-b from-blue-500 to-purple-500 rounded-full"></div>
-            <h3 className="text-2xl font-bold text-gray-900">Skills</h3>
+            <h3 className="text-xl font-bold text-gray-900">Skills</h3>
           </div>
           <div className="flex flex-wrap gap-3">
             {formData.skills.split(',').map((skill, index) => {

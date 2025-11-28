@@ -4,7 +4,7 @@ import { FiMail, FiPhone, FiMapPin } from 'react-icons/fi';
 
 export default function ModernTemplate({ formData }) {
   return (
-    <div className="bg-white text-gray-900 max-w-[850px] mx-auto p-6">
+    <div className="bg-white text-gray-900 w-full p-6 min-h-[297mm]">
       {/* Header with gradient */}
       <div className="flex gap-6 items-start mb-6 pb-6 border-b-4 border-primary">
         {formData.imageUrl && (
