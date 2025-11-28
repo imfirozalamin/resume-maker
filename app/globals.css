@@ -231,3 +231,42 @@ textarea.input-field {
     display: none !important;
   }
 }
+
+/* Resume Demo Container - Responsive Scaling */
+.resume-demo-container {
+  width: 850px;
+  max-width: 100%;
+  margin: 0 auto;
+  transform-origin: top center;
+  min-height: 100%;
+}
+
+@media (min-width: 901px) {
+  .resume-demo-container {
+    transform: scale(0.9);
+  }
+}
+
+@media (max-width: 900px) {
+  .resume-demo-container {
+    transform: scale(0.75);
+  }
+}
+
+@media (max-width: 768px) {
+  .resume-demo-container {
+    transform: scale(0.6);
+  }
+}
+
+@media (max-width: 640px) {
+  .resume-demo-container {
+    transform: scale(0.48);
+  }
+}
+
+@media (max-width: 480px) {
+  .resume-demo-container {
+    transform: scale(0.38);
+  }
+}

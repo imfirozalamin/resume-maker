@@ -41,7 +41,7 @@ const templates = [
   },
 ];
 
-export default function TemplateSelector({ selectedTemplate, onSelectTemplate, onShowDemo }) {
+export default function TemplateSelector({ selectedTemplate, onSelectTemplate }) {
   return (
     <div className="mb-12">
       <h2 className="text-3xl font-bold text-center mb-8">Choose a Template</h2>
@@ -66,23 +66,15 @@ export default function TemplateSelector({ selectedTemplate, onSelectTemplate, o
             )}
             
             <div 
-              className="h-48 flex items-center justify-center p-4 relative overflow-hidden"
-              style={{ background: template.color }}
+              className="h-64 flex items-center justify-center p-0 relative overflow-hidden bg-gray-200"
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent"></div>
-              <div className="relative w-full h-full bg-white rounded-lg shadow-lg p-3 flex flex-col gap-2">
-                <div className="h-3 bg-gray-200 rounded w-3/5"></div>
-                <div className="h-2 bg-gray-300 rounded w-2/5"></div>
-                <div className="mt-2 space-y-1.5">
-                  <div className="h-1.5 bg-gray-200 rounded w-full"></div>
-                  <div className="h-1.5 bg-gray-200 rounded w-4/5"></div>
-                  <div className="h-1.5 bg-gray-200 rounded w-full"></div>
-                </div>
-                <div className="mt-auto space-y-1">
-                  <div className="h-1.5 bg-gray-300 rounded w-2/3"></div>
-                  <div className="h-1.5 bg-gray-300 rounded w-1/2"></div>
-                </div>
-              </div>
+              <iframe 
+                src={`/previews/${template.id}.pdf#toolbar=0&navpanes=0&scrollbar=0&view=Fit`}
+                className="w-[105%] h-[105%] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 border-none pointer-events-none" 
+                title={`${template.name} Preview`}
+                scrolling="no"
+              />
+              <div className="absolute inset-0 bg-transparent z-10"></div>
             </div>
             
             <div className="p-4 bg-dark-tertiary">
@@ -95,7 +87,7 @@ export default function TemplateSelector({ selectedTemplate, onSelectTemplate, o
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  onShowDemo(template.id);
+                  window.open(`/previews/${template.id}.pdf`, '_blank');
                 }}
                 className="w-full py-2 px-3 bg-dark-card border border-white/10 text-white rounded-lg text-sm transition-all duration-200 hover:bg-primary hover:border-primary flex items-center justify-center gap-2"
               >

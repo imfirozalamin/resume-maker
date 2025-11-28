@@ -8,6 +8,7 @@ import ResumePreview from '@/components/ResumePreview';
 import TemplateSelector from '@/components/TemplateSelector';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { useSearchParams } from 'next/navigation';
 
 const demoData = {
   fullName: 'Sarah Johnson',
@@ -43,11 +44,13 @@ const demoData = {
 };
 
 export default function Home() {
+  const searchParams = useSearchParams();
+  const printMode = searchParams.get('mode') === 'print';
+  const printTemplate = searchParams.get('template');
+
   const [step, setStep] = useState('template');
   const [selectedTemplate, setSelectedTemplate] = useState('modern');
   const [isGenerating, setIsGenerating] = useState(false);
-  const [showDemo, setShowDemo] = useState(false);
-  const [demoTemplate, setDemoTemplate] = useState('modern');
   const previewRef = useRef(null);
 
   const [formData, setFormData] = useState({
@@ -76,11 +79,6 @@ export default function Home() {
     ],
     skills: '',
   });
-
-  const handleShowDemo = (templateId) => {
-    setDemoTemplate(templateId);
-    setShowDemo(true);
-  };
 
   const handleDownloadPDF = async () => {
     if (!previewRef.current) return;
@@ -141,7 +139,6 @@ export default function Home() {
             <TemplateSelector
               selectedTemplate={selectedTemplate}
               onSelectTemplate={setSelectedTemplate}
-              onShowDemo={handleShowDemo}
             />
             <div className="flex justify-center gap-6 mt-12 pb-12">
               <button
@@ -216,6 +213,29 @@ export default function Home() {
     }
   };
 
+  if (printMode && printTemplate) {
+    return (
+      <div style={{ 
+        width: '210mm', 
+        height: '297mm', 
+        maxHeight: '297mm',
+        background: 'white', 
+        margin: 0, 
+        padding: 0,
+        overflow: 'hidden',
+        position: 'relative'
+      }}>
+        <div style={{ 
+          transform: 'scale(0.95)', 
+          transformOrigin: 'top center',
+          height: '100%'
+        }}>
+          <ResumePreview formData={demoData} previewRef={null} selectedTemplate={printTemplate} />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <main className="min-h-screen py-8">
       {/* Hero Section */}
@@ -273,54 +293,6 @@ export default function Home() {
 
       {/* Main Content */}
       <AnimatePresence mode="wait">{renderStep()}</AnimatePresence>
-
-      {/* Demo Modal */}
-      <AnimatePresence>
-        {showDemo && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-            onClick={() => setShowDemo(false)}
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-dark-card rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto relative"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="sticky top-0 bg-dark-card border-b border-white/10 p-4 flex justify-between items-center z-10">
-                <h3 className="text-2xl font-bold">Template Preview</h3>
-                <button
-                  onClick={() => setShowDemo(false)}
-                  className="w-10 h-10 rounded-full bg-dark-tertiary hover:bg-error transition-colors duration-200 flex items-center justify-center"
-                >
-                  <FiX size={20} />
-                </button>
-              </div>
-              <div className="p-6">
-                <ResumePreview formData={demoData} previewRef={null} selectedTemplate={demoTemplate} />
-              </div>
-              <div className="sticky bottom-0 bg-dark-card border-t border-white/10 p-4 flex justify-center gap-4">
-                <button
-                  onClick={() => {
-                    setSelectedTemplate(demoTemplate);
-                    setShowDemo(false);
-                  }}
-                  className="btn btn-primary"
-                >
-                  Use This Template
-                </button>
-                <button onClick={() => setShowDemo(false)} className="btn btn-secondary">
-                  Close
-                </button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </main>
   );
 }
