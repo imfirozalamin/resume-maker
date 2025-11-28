@@ -69,8 +69,8 @@ export default function TemplateSelector({ selectedTemplate, onSelectTemplate })
               className="h-64 flex items-center justify-center p-0 relative overflow-hidden bg-gray-200"
             >
               <iframe 
-                src={`/previews/${template.id}.pdf#toolbar=0&navpanes=0&scrollbar=0&view=Fit`}
-                className="w-[105%] h-[105%] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 border-none pointer-events-none" 
+                src={`/previews/${template.id}.pdf#toolbar=0&navpanes=0&scrollbar=0&view=FitH`}
+                className="w-[calc(100%+20px)] h-[100%] absolute top-0 left-0 border-none pointer-events-none" 
                 title={`${template.name} Preview`}
                 scrolling="no"
               />

@@ -226,8 +226,6 @@ export default function Home() {
         position: 'relative'
       }}>
         <div style={{ 
-          transform: 'scale(0.95)', 
-          transformOrigin: 'top center',
           height: '100%'
         }}>
           <ResumePreview formData={demoData} previewRef={null} selectedTemplate={printTemplate} />
