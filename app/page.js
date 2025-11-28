@@ -1,66 +1,326 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client';
+
+import { useState, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FiDownload, FiEye, FiEdit3, FiX } from 'react-icons/fi';
+import ResumeForm from '@/components/ResumeForm';
+import ResumePreview from '@/components/ResumePreview';
+import TemplateSelector from '@/components/TemplateSelector';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+
+const demoData = {
+  fullName: 'Sarah Johnson',
+  jobTitle: 'Senior Product Designer',
+  email: 'sarah.johnson@email.com',
+  phone: '+1 (555) 123-4567',
+  location: 'San Francisco, CA',
+  summary: 'Creative and results-driven Product Designer with 8+ years of experience crafting user-centered digital experiences. Proven track record of leading design teams and delivering innovative solutions that drive business growth and user satisfaction.',
+  imageUrl: '',
+  experience: [
+    {
+      company: 'Tech Innovations Inc.',
+      position: 'Senior Product Designer',
+      duration: 'Jan 2020 - Present',
+      description: 'Lead design initiatives for flagship products, managing a team of 5 designers. Increased user engagement by 45% through redesigned user flows and interface improvements.',
+    },
+    {
+      company: 'Digital Solutions Co.',
+      position: 'Product Designer',
+      duration: 'Mar 2017 - Dec 2019',
+      description: 'Designed and shipped 15+ features for mobile and web applications. Collaborated with cross-functional teams to deliver user-centric solutions.',
+    },
+  ],
+  education: [
+    {
+      school: 'California Institute of Design',
+      degree: 'Bachelor of Fine Arts in Graphic Design',
+      duration: '2013 - 2017',
+      description: 'Graduated with Honors. Focus on UX/UI Design and Human-Computer Interaction.',
+    },
+  ],
+  skills: 'Figma, Adobe Creative Suite, Sketch, Prototyping, User Research, Wireframing, Design Systems, HTML/CSS, React',
+};
 
 export default function Home() {
-  return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.js file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+  const [step, setStep] = useState('template');
+  const [selectedTemplate, setSelectedTemplate] = useState('modern');
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [showDemo, setShowDemo] = useState(false);
+  const [demoTemplate, setDemoTemplate] = useState('modern');
+  const previewRef = useRef(null);
+
+  const [formData, setFormData] = useState({
+    fullName: '',
+    jobTitle: '',
+    email: '',
+    phone: '',
+    location: '',
+    summary: '',
+    imageUrl: '',
+    experience: [
+      {
+        company: '',
+        position: '',
+        duration: '',
+        description: '',
+      },
+    ],
+    education: [
+      {
+        school: '',
+        degree: '',
+        duration: '',
+        description: '',
+      },
+    ],
+    skills: '',
+  });
+
+  const handleShowDemo = (templateId) => {
+    setDemoTemplate(templateId);
+    setShowDemo(true);
+  };
+
+  const handleDownloadPDF = async () => {
+    if (!previewRef.current) return;
+
+    setIsGenerating(true);
+    try {
+      const element = previewRef.current;
+      const canvas = await html2canvas(element, {
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        backgroundColor: '#ffffff',
+      });
+
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4',
+      });
+
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      const imgWidth = canvas.width;
+      const imgHeight = canvas.height;
+      const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+      const imgX = (pdfWidth - imgWidth * ratio) / 2;
+      const imgY = 0;
+
+      pdf.addImage(
+        imgData,
+        'PNG',
+        imgX,
+        imgY,
+        imgWidth * ratio,
+        imgHeight * ratio
+      );
+
+      pdf.save(`${formData.fullName || 'resume'}_resume.pdf`);
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      alert('Failed to generate PDF. Please try again.');
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  const renderStep = () => {
+    switch (step) {
+      case 'template':
+        return (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="max-w-[1400px] mx-auto px-4"
           >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+            <TemplateSelector
+              selectedTemplate={selectedTemplate}
+              onSelectTemplate={setSelectedTemplate}
+              onShowDemo={handleShowDemo}
             />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            <div className="flex justify-center gap-6 mt-12 pb-12">
+              <button
+                onClick={() => setStep('form')}
+                className="btn btn-primary"
+                disabled={!selectedTemplate}
+              >
+                Continue to Form
+              </button>
+            </div>
+          </motion.div>
+        );
+
+      case 'form':
+        return (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="max-w-4xl mx-auto px-4"
           >
-            Documentation
-          </a>
+            <ResumeForm formData={formData} setFormData={setFormData} />
+            <div className="flex justify-center gap-6 mt-12 pb-12 flex-wrap">
+              <button onClick={() => setStep('template')} className="btn btn-secondary">
+                Back
+              </button>
+              <button onClick={() => setStep('preview')} className="btn btn-primary">
+                <FiEye />
+                Preview Resume
+              </button>
+            </div>
+          </motion.div>
+        );
+
+      case 'preview':
+        return (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="max-w-5xl mx-auto px-4"
+          >
+            <ResumePreview formData={formData} previewRef={previewRef} selectedTemplate={selectedTemplate} />
+            <div className="flex justify-center gap-6 mt-12 pb-12 flex-wrap">
+              <button onClick={() => setStep('form')} className="btn btn-secondary">
+                <FiEdit3 />
+                Edit
+              </button>
+              <button
+                onClick={handleDownloadPDF}
+                className="btn btn-primary"
+                disabled={isGenerating}
+              >
+                {isGenerating ? (
+                  <>
+                    <div className="w-5 h-5 border-3 border-white/30 border-t-white rounded-full animate-spin"></div>
+                    Generating...
+                  </>
+                ) : (
+                  <>
+                    <FiDownload />
+                    Download PDF
+                  </>
+                )}
+              </button>
+            </div>
+          </motion.div>
+        );
+
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <main className="min-h-screen py-8">
+      {/* Hero Section */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="text-center mb-12 px-4"
+      >
+        <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold mb-6 leading-tight">
+          Create Your <span className="gradient-text">Perfect Resume</span>
+        </h1>
+        <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+          Professional resume builder with modern templates and instant PDF download
+        </p>
+      </motion.div>
+
+      {/* Progress Indicator */}
+      <div className="flex items-center justify-center max-w-2xl mx-auto mb-12 px-4">
+        <div className={`flex flex-col items-center gap-2 ${step === 'template' ? 'text-primary' : step !== 'template' ? 'text-success' : 'text-gray-500'}`}>
+          <div className={`w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg transition-all duration-300 ${
+            step === 'template' ? 'bg-gradient-primary text-white shadow-glow' : 
+            step !== 'template' ? 'bg-success text-white' : 
+            'bg-dark-tertiary border-2 border-white/10'
+          }`}>
+            1
+          </div>
+          <span className="text-sm font-medium">Template</span>
         </div>
-      </main>
-    </div>
+        
+        <div className="w-24 h-0.5 bg-white/10 mx-4"></div>
+        
+        <div className={`flex flex-col items-center gap-2 ${step === 'form' ? 'text-primary' : step === 'preview' ? 'text-success' : 'text-gray-500'}`}>
+          <div className={`w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg transition-all duration-300 ${
+            step === 'form' ? 'bg-gradient-primary text-white shadow-glow' : 
+            step === 'preview' ? 'bg-success text-white' : 
+            'bg-dark-tertiary border-2 border-white/10'
+          }`}>
+            2
+          </div>
+          <span className="text-sm font-medium">Information</span>
+        </div>
+        
+        <div className="w-24 h-0.5 bg-white/10 mx-4"></div>
+        
+        <div className={`flex flex-col items-center gap-2 ${step === 'preview' ? 'text-primary' : 'text-gray-500'}`}>
+          <div className={`w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg transition-all duration-300 ${
+            step === 'preview' ? 'bg-gradient-primary text-white shadow-glow' : 
+            'bg-dark-tertiary border-2 border-white/10'
+          }`}>
+            3
+          </div>
+          <span className="text-sm font-medium">Preview</span>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <AnimatePresence mode="wait">{renderStep()}</AnimatePresence>
+
+      {/* Demo Modal */}
+      <AnimatePresence>
+        {showDemo && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            onClick={() => setShowDemo(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-dark-card rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto relative"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="sticky top-0 bg-dark-card border-b border-white/10 p-4 flex justify-between items-center z-10">
+                <h3 className="text-2xl font-bold">Template Preview</h3>
+                <button
+                  onClick={() => setShowDemo(false)}
+                  className="w-10 h-10 rounded-full bg-dark-tertiary hover:bg-error transition-colors duration-200 flex items-center justify-center"
+                >
+                  <FiX size={20} />
+                </button>
+              </div>
+              <div className="p-6">
+                <ResumePreview formData={demoData} previewRef={null} selectedTemplate={demoTemplate} />
+              </div>
+              <div className="sticky bottom-0 bg-dark-card border-t border-white/10 p-4 flex justify-center gap-4">
+                <button
+                  onClick={() => {
+                    setSelectedTemplate(demoTemplate);
+                    setShowDemo(false);
+                  }}
+                  className="btn btn-primary"
+                >
+                  Use This Template
+                </button>
+                <button onClick={() => setShowDemo(false)} className="btn btn-secondary">
+                  Close
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </main>
   );
 }
