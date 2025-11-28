@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { FiUpload, FiUser, FiMail, FiPhone, FiMapPin, FiBriefcase, FiBook, FiX } from 'react-icons/fi';
+import imageCompression from 'browser-image-compression';
 
 export default function ResumeForm({ onSubmit, formData, setFormData }) {
   const [imagePreview, setImagePreview] = useState(null);
@@ -11,16 +12,33 @@ export default function ResumeForm({ onSubmit, formData, setFormData }) {
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result);
-      };
-      reader.readAsDataURL(file);
-
       setUploading(true);
       try {
+        // Compression options
+        const options = {
+          maxSizeMB: 1, // Maximum file size in MB
+          maxWidthOrHeight: 1024, // Max width or height
+          useWebWorker: true,
+          fileType: 'image/jpeg', // Convert to JPEG for better compression
+          initialQuality: 0.9, // High quality (0.9 = 90%)
+        };
+
+        // Compress the image
+        const compressedFile = await imageCompression(file, options);
+        
+        console.log(`Original size: ${(file.size / 1024 / 1024).toFixed(2)} MB`);
+        console.log(`Compressed size: ${(compressedFile.size / 1024 / 1024).toFixed(2)} MB`);
+
+        // Create preview from compressed file
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setImagePreview(reader.result);
+        };
+        reader.readAsDataURL(compressedFile);
+
+        // Upload compressed file
         const formDataUpload = new FormData();
-        formDataUpload.append('file', file);
+        formDataUpload.append('file', compressedFile, compressedFile.name || 'compressed-image.jpg');
 
         const response = await fetch('/api/upload', {
           method: 'POST',
@@ -33,6 +51,7 @@ export default function ResumeForm({ onSubmit, formData, setFormData }) {
         }
       } catch (error) {
         console.error('Upload failed:', error);
+        alert('Failed to upload image. Please try again.');
       } finally {
         setUploading(false);
       }
