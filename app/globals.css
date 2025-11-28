@@ -28,151 +28,8 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-weight: 700;
-  color: white;
-  line-height: 1.2;
 }
 
-h1 {
-  font-size: clamp(2rem, 5vw, 3.5rem);
-  margin-bottom: 1.5rem;
-}
-
-h2 {
-  font-size: clamp(1.5rem, 4vw, 2.5rem);
-  margin-bottom: 1.5rem;
-}
-
-h3 {
-  font-size: clamp(1.25rem, 3vw, 2rem);
-  margin-bottom: 1rem;
-}
-
-p {
-  color: rgb(184, 184, 209);
-  margin-bottom: 1rem;
-}
-
-a {
-  color: #8b9df8;
-  text-decoration: none;
-  transition: color 250ms cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-a:hover {
-  color: #667eea;
-}
-
-/* Buttons */
-.btn {
-  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-weight: 600;
-  padding: 0.875rem 2rem;
-  border-radius: 0.75rem;
-  border: none;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  position: relative;
-  overflow: hidden;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.btn::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0;
-  height: 0;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1);
-  transform: translate(-50%, -50%);
-  transition: width 0.6s, height 0.6s;
-}
-
-.btn:hover::before {
-  width: 300px;
-  height: 300px;
-}
-
-.btn-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-}
-
-.btn-primary:hover {
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
-  transform: translateY(-2px);
-}
-
-.btn-primary:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.btn-secondary {
-  background: #252541;
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.btn-secondary:hover {
-  background: #1a1a2e;
-  border-color: rgba(102, 126, 234, 0.3);
-}
-
-/* Cards */
-.card {
-  background: rgba(26, 26, 46, 0.8);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 1rem;
-  padding: 2rem;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-  transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.card:hover {
-  border-color: rgba(102, 126, 234, 0.3);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  transform: translateY(-2px);
-}
-
-/* Input Fields */
-.input-field {
-  width: 100%;
-  padding: 0.875rem 1rem;
-  background: #252541;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 0.75rem;
-  color: white;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-size: 1rem;
-  transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.input-field:focus {
-  outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-}
-
-.input-field::placeholder {
-  color: #7c7c99;
-}
-
-textarea.input-field {
-  resize: vertical;
-  min-height: 100px;
-}
-
-/* Gradient Text */
 .gradient-text {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   -webkit-background-clip: text;
@@ -180,70 +37,92 @@ textarea.input-field {
   background-clip: text;
 }
 
-/* Loader */
-.loader {
-  width: 48px;
-  height: 48px;
-  border: 5px solid #252541;
-  border-bottom-color: #667eea;
-  border-radius: 50%;
-  display: inline-block;
-  box-sizing: border-box;
-  animation: rotation 1s linear infinite;
+.bg-gradient-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
-@keyframes rotation {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+.btn {
+  @apply px-6 py-3 rounded-lg font-semibold transition-all duration-300 flex items-center gap-2 shadow-lg;
 }
 
-/* Scrollbar Styling */
+.btn-primary {
+  @apply bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:shadow-indigo-500/30 hover:scale-105;
+}
+
+.btn-secondary {
+  @apply bg-white/10 text-white border border-white/20 hover:bg-white/20 hover:scale-105 backdrop-blur-sm;
+}
+
+.card {
+  @apply bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8 shadow-xl;
+}
+
+.input-field {
+  @apply w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors;
+}
+
+.label {
+  @apply block text-sm font-medium text-gray-300 mb-2;
+}
+
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #1a1a2e;
+  background: #0f0f1e; 
 }
-
+ 
 ::-webkit-scrollbar-thumb {
-  background: #667eea;
-  border-radius: 5px;
+  background: #33334d; 
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #5568d3;
+  background: #4d4d66; 
 }
 
 /* Print Styles */
 @media print {
+  @page {
+    margin: 0;
+    size: A4;
+  }
+  
   body {
     background: white;
     color: black;
+    margin: 0;
+    padding: 0;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
-  
+
+  /* Ensure the resume container fills the page */
+  body > div {
+    width: 210mm !important;
+    height: 297mm !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+  }
+
+  /* Hide non-printable elements if any leak through */
   .no-print {
     display: none !important;
   }
 }
 
-/* Resume Demo Container - Responsive Scaling */
-.resume-demo-container {
-  width: 850px;
-  max-width: 100%;
-  margin: 0 auto;
+/* Responsive Resume Container for Preview */
+.resume-scale-wrapper {
   transform-origin: top center;
-  min-height: 100%;
+  transition: transform 0.3s ease;
 }
 
-@media (min-width: 901px) {
+@media (max-width: 1024px) {
   .resume-demo-container {
-    transform: scale(0.9);
+    transform: scale(0.85);
   }
 }
 

@@ -51,7 +51,7 @@ export default function ExecutiveTemplate({ formData }) {
       <div className="p-8">
         {/* Executive Summary */}
         {formData.summary && (
-          <div className="mb-6">
+          <div className="mb-8">
             <div className="flex items-center gap-3 mb-3">
               <div className="h-6 w-1 bg-yellow-500"></div>
               <h3 className="text-lg font-bold text-gray-900">Executive Summary</h3>
@@ -62,7 +62,7 @@ export default function ExecutiveTemplate({ formData }) {
 
         {/* Professional Experience */}
         {formData.experience?.length > 0 && formData.experience[0].company && (
-          <div className="mb-6">
+          <div className="mb-8">
             <div className="flex items-center gap-3 mb-4">
               <div className="h-6 w-1 bg-yellow-500"></div>
               <h3 className="text-lg font-bold text-gray-900">Professional Experience</h3>
@@ -90,7 +90,7 @@ export default function ExecutiveTemplate({ formData }) {
 
         {/* Education */}
         {formData.education?.length > 0 && formData.education[0].school && (
-          <div className="mb-6">
+          <div className="mb-8">
             <div className="flex items-center gap-3 mb-4">
               <div className="h-6 w-1 bg-yellow-500"></div>
               <h3 className="text-lg font-bold text-gray-900">Education</h3>
@@ -116,7 +116,7 @@ export default function ExecutiveTemplate({ formData }) {
 
         {/* Core Competencies */}
         {formData.skills && (
-          <div className="mb-6">
+          <div className="mb-8">
             <div className="flex items-center gap-3 mb-4">
               <div className="h-6 w-1 bg-yellow-500"></div>
               <h3 className="text-lg font-bold text-gray-900">Core Competencies</h3>

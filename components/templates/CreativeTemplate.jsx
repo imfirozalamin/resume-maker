@@ -6,7 +6,7 @@ export default function CreativeTemplate({ formData }) {
   return (
     <div className="bg-gradient-to-br from-blue-50 to-purple-50 text-gray-900 w-full p-8 min-h-[297mm]">
       {/* Creative Header */}
-      <div className="relative mb-6">
+      <div className="relative mb-8">
         <div className="absolute -left-6 -top-6 w-32 h-32 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full opacity-20"></div>
         <div className="relative bg-white rounded-3xl p-6 shadow-xl">
           <div className="flex gap-6 items-center">
@@ -51,7 +51,7 @@ export default function CreativeTemplate({ formData }) {
 
       {/* Summary */}
       {formData.summary && (
-        <div className="mb-6 bg-white rounded-2xl p-4 shadow-lg">
+        <div className="mb-8 bg-white rounded-2xl p-4 shadow-lg">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-2 h-8 bg-gradient-to-b from-blue-500 to-purple-500 rounded-full"></div>
             <h3 className="text-xl font-bold text-gray-900">About Me</h3>
@@ -62,7 +62,7 @@ export default function CreativeTemplate({ formData }) {
 
       {/* Experience */}
       {formData.experience?.length > 0 && formData.experience[0].company && (
-        <div className="mb-6">
+        <div className="mb-8">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-2 h-8 bg-gradient-to-b from-blue-500 to-purple-500 rounded-full"></div>
             <h3 className="text-xl font-bold text-gray-900">Experience</h3>
@@ -92,7 +92,7 @@ export default function CreativeTemplate({ formData }) {
 
       {/* Education */}
       {formData.education?.length > 0 && formData.education[0].school && (
-        <div className="mb-6">
+        <div className="mb-8">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-2 h-8 bg-gradient-to-b from-blue-500 to-purple-500 rounded-full"></div>
             <h3 className="text-xl font-bold text-gray-900">Education</h3>
@@ -122,7 +122,7 @@ export default function CreativeTemplate({ formData }) {
 
       {/* Skills */}
       {formData.skills && (
-        <div className="mb-6">
+        <div className="mb-8">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-2 h-8 bg-gradient-to-b from-blue-500 to-purple-500 rounded-full"></div>
             <h3 className="text-xl font-bold text-gray-900">Skills</h3>

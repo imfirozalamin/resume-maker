@@ -6,7 +6,7 @@ import { FiUpload, FiUser, FiMail, FiPhone, FiMapPin, FiBriefcase, FiBook, FiX }
 import imageCompression from 'browser-image-compression';
 
 export default function ResumeForm({ onSubmit, formData, setFormData }) {
-  const [imagePreview, setImagePreview] = useState(null);
+  const [imagePreview, setImagePreview] = useState(formData.imageUrl || null);
   const [uploading, setUploading] = useState(false);
 
   const handleImageChange = async (e) => {

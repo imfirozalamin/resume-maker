@@ -1,13 +1,12 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiDownload, FiEye, FiEdit3, FiX } from 'react-icons/fi';
 import ResumeForm from '@/components/ResumeForm';
 import ResumePreview from '@/components/ResumePreview';
 import TemplateSelector from '@/components/TemplateSelector';
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
+import PrintView from '@/components/PrintView';
 import { useSearchParams } from 'next/navigation';
 
 const demoData = {
@@ -43,7 +42,7 @@ const demoData = {
   skills: 'Figma, Adobe Creative Suite, Sketch, Prototyping, User Research, Wireframing, Design Systems, HTML/CSS, React',
 };
 
-export default function Home() {
+function HomeContent() {
   const searchParams = useSearchParams();
   const printMode = searchParams.get('mode') === 'print';
   const printTemplate = searchParams.get('template');
@@ -51,6 +50,7 @@ export default function Home() {
   const [step, setStep] = useState('template');
   const [selectedTemplate, setSelectedTemplate] = useState('modern');
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
   const previewRef = useRef(null);
 
   const [formData, setFormData] = useState({
@@ -80,50 +80,38 @@ export default function Home() {
     skills: '',
   });
 
+  // Load saved data on mount
+  useEffect(() => {
+    const savedData = localStorage.getItem('resumeFormData');
+    const savedTemplate = localStorage.getItem('resumeSelectedTemplate');
+    const savedStep = localStorage.getItem('resumeStep');
+
+    if (savedData) setFormData(JSON.parse(savedData));
+    if (savedTemplate) setSelectedTemplate(savedTemplate);
+    if (savedStep) setStep(savedStep);
+    setIsLoaded(true);
+  }, []);
+
+  // Save data on change
+  useEffect(() => {
+    localStorage.setItem('resumeFormData', JSON.stringify(formData));
+  }, [formData]);
+
+  useEffect(() => {
+    localStorage.setItem('resumeSelectedTemplate', selectedTemplate);
+  }, [selectedTemplate]);
+
+  useEffect(() => {
+    localStorage.setItem('resumeStep', step);
+  }, [step]);
+
   const handleDownloadPDF = async () => {
-    if (!previewRef.current) return;
-
-    setIsGenerating(true);
-    try {
-      const element = previewRef.current;
-      const canvas = await html2canvas(element, {
-        scale: 2,
-        useCORS: true,
-        logging: false,
-        backgroundColor: '#ffffff',
-      });
-
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF({
-        orientation: 'portrait',
-        unit: 'mm',
-        format: 'a4',
-      });
-
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = pdf.internal.pageSize.getHeight();
-      const imgWidth = canvas.width;
-      const imgHeight = canvas.height;
-      const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
-      const imgX = (pdfWidth - imgWidth * ratio) / 2;
-      const imgY = 0;
-
-      pdf.addImage(
-        imgData,
-        'PNG',
-        imgX,
-        imgY,
-        imgWidth * ratio,
-        imgHeight * ratio
-      );
-
-      pdf.save(`${formData.fullName || 'resume'}_resume.pdf`);
-    } catch (error) {
-      console.error('Error generating PDF:', error);
-      alert('Failed to generate PDF. Please try again.');
-    } finally {
-      setIsGenerating(false);
-    }
+    // Save current state to ensure it's fresh
+    localStorage.setItem('resumeFormData', JSON.stringify(formData));
+    
+    // Open print window
+    const printUrl = `/?mode=print&template=${selectedTemplate}`;
+    window.open(printUrl, '_blank');
   };
 
   const renderStep = () => {
@@ -215,22 +203,13 @@ export default function Home() {
 
   if (printMode && printTemplate) {
     return (
-      <div style={{ 
-        width: '210mm', 
-        height: '297mm', 
-        maxHeight: '297mm',
-        background: 'white', 
-        margin: 0, 
-        padding: 0,
-        overflow: 'hidden',
-        position: 'relative'
-      }}>
-        <div style={{ 
-          height: '100%'
-        }}>
-          <ResumePreview formData={demoData} previewRef={null} selectedTemplate={printTemplate} />
-        </div>
-      </div>
+      <PrintView 
+        template={printTemplate} 
+        isDemo={searchParams.get('demo') === 'true'} 
+        userData={formData}
+        demoData={demoData}
+        isLoaded={isLoaded}
+      />
     );
   }
 
@@ -292,5 +271,13 @@ export default function Home() {
       {/* Main Content */}
       <AnimatePresence mode="wait">{renderStep()}</AnimatePresence>
     </main>
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={<div className="flex items-center justify-center min-h-screen text-white">Loading...</div>}>
+      <HomeContent />
+    </Suspense>
   );
 }

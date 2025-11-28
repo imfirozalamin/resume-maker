@@ -26,7 +26,7 @@ async function generatePreviewPDFs() {
       });
 
       // Navigate to the demo page with the specific template
-      const url = `http://localhost:3000?template=${template}&mode=print`;
+      const url = `http://localhost:3000/?mode=print&template=${template}&demo=true`;
       await page.goto(url, {
         waitUntil: 'networkidle0',
         timeout: 30000

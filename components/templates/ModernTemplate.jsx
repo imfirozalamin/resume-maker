@@ -6,7 +6,7 @@ export default function ModernTemplate({ formData }) {
   return (
     <div className="bg-white text-gray-900 w-full p-6 min-h-[297mm]">
       {/* Header with gradient */}
-      <div className="flex gap-6 items-start mb-6 pb-6 border-b-4 border-primary">
+      <div className="flex gap-6 items-start mb-8 pb-6 border-b-4 border-primary">
         {formData.imageUrl && (
           <img
             src={formData.imageUrl}
@@ -46,7 +46,7 @@ export default function ModernTemplate({ formData }) {
 
       {/* Summary */}
       {formData.summary && (
-        <div className="mb-6">
+        <div className="mb-8">
           <h3 className="text-lg font-bold text-gray-900 mb-2 pb-1 border-b-2 border-gray-200 uppercase tracking-wider">
             Professional Summary
           </h3>
@@ -56,7 +56,7 @@ export default function ModernTemplate({ formData }) {
 
       {/* Experience */}
       {formData.experience?.length > 0 && formData.experience[0].company && (
-        <div className="mb-6">
+        <div className="mb-8">
           <h3 className="text-lg font-bold text-gray-900 mb-3 pb-1 border-b-2 border-gray-200 uppercase tracking-wider">
             Work Experience
           </h3>
@@ -81,7 +81,7 @@ export default function ModernTemplate({ formData }) {
 
       {/* Education */}
       {formData.education?.length > 0 && formData.education[0].school && (
-        <div className="mb-6">
+        <div className="mb-8">
           <h3 className="text-lg font-bold text-gray-900 mb-3 pb-1 border-b-2 border-gray-200 uppercase tracking-wider">
             Education
           </h3>
@@ -106,7 +106,7 @@ export default function ModernTemplate({ formData }) {
 
       {/* Skills */}
       {formData.skills && (
-        <div className="mb-6">
+        <div className="mb-8">
           <h3 className="text-lg font-bold text-gray-900 mb-3 pb-1 border-b-2 border-gray-200 uppercase tracking-wider">
             Skills
           </h3>

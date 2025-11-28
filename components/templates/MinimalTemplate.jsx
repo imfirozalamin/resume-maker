@@ -6,7 +6,7 @@ export default function MinimalTemplate({ formData }) {
   return (
     <div className="bg-white text-gray-900 w-full p-8 min-h-[297mm]">
       {/* Minimal Header */}
-      <div className="mb-8 pb-6 border-b border-gray-300">
+      <div className="mb-10 pb-6 border-b border-gray-300">
         <h1 className="text-4xl font-light text-gray-900 mb-2 tracking-tight">
           {formData.fullName || 'Your Name'}
         </h1>
@@ -37,7 +37,7 @@ export default function MinimalTemplate({ formData }) {
 
       {/* Summary */}
       {formData.summary && (
-        <div className="mb-8">
+        <div className="mb-10">
           <h3 className="text-xs font-semibold text-gray-900 mb-2 uppercase tracking-widest">
             Summary
           </h3>
@@ -47,7 +47,7 @@ export default function MinimalTemplate({ formData }) {
 
       {/* Experience */}
       {formData.experience?.length > 0 && formData.experience[0].company && (
-        <div className="mb-8">
+        <div className="mb-10">
           <h3 className="text-xs font-semibold text-gray-900 mb-4 uppercase tracking-widest">
             Experience
           </h3>
@@ -70,7 +70,7 @@ export default function MinimalTemplate({ formData }) {
 
       {/* Education */}
       {formData.education?.length > 0 && formData.education[0].school && (
-        <div className="mb-8">
+        <div className="mb-10">
           <h3 className="text-xs font-semibold text-gray-900 mb-4 uppercase tracking-widest">
             Education
           </h3>
@@ -93,7 +93,7 @@ export default function MinimalTemplate({ formData }) {
 
       {/* Skills */}
       {formData.skills && (
-        <div className="mb-8">
+        <div className="mb-10">
           <h3 className="text-xs font-semibold text-gray-900 mb-3 uppercase tracking-widest">
             Skills
           </h3>
